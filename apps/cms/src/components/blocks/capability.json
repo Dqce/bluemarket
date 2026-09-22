@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_blocks_capabilities",
+  "info": {
+    "displayName": "Capability",
+    "icon": "terminal"
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

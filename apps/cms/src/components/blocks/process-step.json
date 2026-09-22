@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_blocks_process_steps",
+  "info": {
+    "displayName": "Process Step",
+    "icon": "apps"
+  },
+  "options": {},
+  "attributes": {
+    "index": {
+      "type": "string",
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "bluemarket",
+  "private": true,
+  "scripts": {
+    "dev": "npm run dev --prefix apps/web",
+    "dev:web": "npm run dev --prefix apps/web",
+    "develop": "npm run develop --prefix apps/cms",
+    "dev:cms": "npm run develop --prefix apps/cms"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

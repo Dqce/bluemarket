@@ -1,0 +1,121 @@
+{
+  "kind": "singleType",
+  "collectionName": "homepages",
+  "info": {
+    "singularName": "homepage",
+    "pluralName": "homepages",
+    "displayName": "Homepage",
+    "description": "Marketing homepage copy"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "heroEyebrow": {
+      "type": "string",
+      "required": true
+    },
+    "heroTitle": {
+      "type": "string",
+      "required": true
+    },
+    "heroEmphasis": {
+      "type": "string",
+      "required": false,
+      "default": "serious systems"
+    },
+    "heroLead": {
+      "type": "text",
+      "required": true
+    },
+    "heroPrimaryCta": {
+      "type": "string",
+      "required": true
+    },
+    "heroSecondaryCta": {
+      "type": "string",
+      "required": true
+    },
+    "heroTags": {
+      "type": "component",
+      "repeatable": true,
+      "component": "blocks.tag"
+    },
+    "capabilitiesCommand": {
+      "type": "string",
+      "required": true
+    },
+    "capabilities": {
+      "type": "component",
+      "repeatable": true,
+      "component": "blocks.capability"
+    },
+    "aboutEyebrow": {
+      "type": "string",
+      "required": true
+    },
+    "aboutTitleOne": {
+      "type": "string",
+      "required": true
+    },
+    "aboutBodyOne": {
+      "type": "text",
+      "required": true
+    },
+    "aboutTitleTwo": {
+      "type": "string",
+      "required": true
+    },
+    "aboutBodyTwo": {
+      "type": "text",
+      "required": true
+    },
+    "servicesEyebrow": {
+      "type": "string",
+      "required": true
+    },
+    "services": {
+      "type": "component",
+      "repeatable": true,
+      "component": "blocks.service"
+    },
+    "processEyebrow": {
+      "type": "string",
+      "required": true
+    },
+    "processSteps": {
+      "type": "component",
+      "repeatable": true,
+      "component": "blocks.process-step"
+    },
+    "contactEyebrow": {
+      "type": "string",
+      "required": true
+    },
+    "contactTitle": {
+      "type": "string",
+      "required": true
+    },
+    "contactBody": {
+      "type": "text",
+      "required": true
+    },
+    "contactEmail": {
+      "type": "string",
+      "required": true
+    },
+    "contactLocation": {
+      "type": "string",
+      "required": true
+    },
+    "whyTitle": {
+      "type": "string",
+      "required": true
+    },
+    "whyBody": {
+      "type": "text",
+      "required": true
+    }
+  }
+}
