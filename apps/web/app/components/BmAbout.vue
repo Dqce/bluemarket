@@ -57,27 +57,27 @@ onMounted(async () => {
       defaults: { ease: 'power3.out' },
     })
 
-    // Hold “Small team,” long enough to read before the punch lands.
+    // Brief beat on “Small team,” then a short pop on “big outcomes.”
     if (lead) {
-      tl.to(lead, { y: 0, autoAlpha: 1, duration: 0.95 })
-      tl.to({}, { duration: 0.45 })
+      tl.to(lead, { y: 0, autoAlpha: 1, duration: 0.7 })
+      tl.to({}, { duration: 0.22 })
     }
     if (punch) {
       tl.fromTo(
         punch,
-        { y: 56, autoAlpha: 0, scale: 0.92 },
-        { y: 0, autoAlpha: 1, scale: 1.12, duration: 0.85, ease: 'power3.out' },
+        { y: 40, autoAlpha: 0, scale: 0.94 },
+        { y: 0, autoAlpha: 1, scale: 1.1, duration: 0.45, ease: 'power3.out' },
       )
-      tl.to(punch, { scale: 1, duration: 0.55, ease: 'power2.out' })
+      tl.to(punch, { scale: 1, duration: 0.28, ease: 'power2.out' })
     }
     if (rule) {
-      tl.to(rule, { scaleX: 1, duration: 0.85, ease: 'power2.inOut' }, '-=0.35')
+      tl.to(rule, { scaleX: 1, duration: 0.55, ease: 'power2.inOut' }, '-=0.2')
     }
     if (body) {
-      tl.to(body, { y: 0, autoAlpha: 1, duration: 0.7 }, '-=0.45')
+      tl.to(body, { y: 0, autoAlpha: 1, duration: 0.5 }, '-=0.3')
     }
     if (side) {
-      tl.to(side, { y: 0, autoAlpha: 1, duration: 0.8 }, '-=0.5')
+      tl.to(side, { y: 0, autoAlpha: 1, duration: 0.55 }, '-=0.35')
     }
   }, rootRef.value)
 })

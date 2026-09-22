@@ -4,6 +4,7 @@ import { withBase } from 'ufo'
 
 const rootRef = ref<HTMLElement | null>(null)
 const canvasRef = ref<HTMLCanvasElement | null>(null)
+const runtimeConfig = useRuntimeConfig()
 
 const GLYPHS = ' .·:;+=*#%@█'
 const CELL = 10
@@ -41,8 +42,8 @@ function noise2(x: number, y: number, t: number) {
 async function buildMask() {
   const img = new Image()
   img.decoding = 'async'
-  // withBase respects NUXT_APP_BASE_URL (e.g. /bluemarket/ on GitHub Pages)
-  img.src = withBase('/bluemarket-icon.png')
+  // Pass app.baseURL — ufo withBase defaults to "/" without it (breaks GitHub Pages).
+  img.src = withBase('/bluemarket-icon.png', runtimeConfig.app.baseURL || '/')
   try {
     await img.decode()
   } catch {
