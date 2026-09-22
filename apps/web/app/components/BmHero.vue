@@ -139,14 +139,14 @@ onUnmounted(() => {
             :key="`em-${word}-${wi}`"
             class="bm-word relative mr-[0.18em] inline-block overflow-hidden align-bottom px-[0.04em] pt-[0.06em] pb-[0.14em]"
           >
-            <span class="bm-word-inner inline-block will-change-transform">
-              {{ word }}
-            </span>
             <span
               data-hero-underline
-              class="pointer-events-none absolute inset-x-[0.04em] bottom-[0.06em] h-[0.09em] origin-left rounded-full bg-primary"
+              class="pointer-events-none absolute inset-x-[0.04em] bottom-[0.06em] z-0 h-[0.09em] origin-left rounded-full bg-primary"
               aria-hidden="true"
             />
+            <span class="bm-word-inner relative z-10 inline-block will-change-transform">
+              {{ word }}
+            </span>
           </span>
 
           <span
