@@ -1,92 +1,68 @@
 # BlueMarket
 
-Monorepo for the BlueMarket marketing site.
+Marketing site + CMS.
 
-| Path | App |
-| --- | --- |
-| `apps/web` | Nuxt 4 front end |
-| `apps/cms` | Strapi 5 CMS |
+```
+apps/web  Nuxt 4
+apps/cms  Strapi 5
+```
 
-Official docs:
+Docs: [Nuxt](https://nuxt.com/docs) · [Strapi](https://docs.strapi.io)
 
-- [Nuxt](https://nuxt.com/docs/getting-started/installation)
-- [Strapi](https://docs.strapi.io)
-- [Nuxt deployment](https://nuxt.com/docs/getting-started/deployment)
-- [Strapi deployment](https://docs.strapi.io/cms/deployment)
+## Setup
 
-## Requirements
+Node.js **22+** ([Nuxt requirement](https://nuxt.com/docs/4.x/getting-started/installation)).
 
-- Node.js 22 or newer ([Nuxt 4 requirement](https://nuxt.com/docs/4.x/getting-started/installation))
-- npm
+Dependencies (including GSAP, Tailwind, Strapi, etc.) install from each app’s `package.json`. You do not install packages by hand.
 
-## Local development
-
-### CMS
+### 1. CMS
 
 ```bash
 cd apps/cms
-cp .env.example .env
-# replace the tobemodified secrets in .env
+cp .env.example .env   # fill in the tobemodified values
 npm install
 npm run develop
 ```
 
-Admin: http://localhost:1337/admin
+Open http://localhost:1337/admin and create the admin user. Homepage data seeds on first boot.
 
-Create the first admin user on first boot. Homepage content is seeded if the single type is empty. Public API access is limited to Homepage `find`.
-
-### Web
+### 2. Web
 
 ```bash
 cd apps/web
-cp .env.example .env
+cp .env.example .env   # STRAPI_URL=http://localhost:1337
 npm install
 npm run dev
 ```
 
-Site: http://localhost:3000
+Open http://localhost:3000.
 
-`STRAPI_URL` in `apps/web/.env` should point at the CMS (default `http://localhost:1337`).
+## Editing copy
 
-From the repo root you can also run `npm run develop` (CMS) and `npm run dev` (web).
+Strapi admin → Content Manager → Homepage.
 
-## Content
+If Strapi is down, the site uses `apps/web/app/lib/homepage-fallback.ts`.
 
-Edit copy in Strapi → Content Manager → Homepage.
+## Build / run (production)
 
-If the CMS is unreachable, the web app falls back to `apps/web/app/lib/homepage-fallback.ts`.
-
-Contact is email only: `hello@bluemarket.co.za`.
-
-## Production
-
-### CMS
+Same commands as the [Strapi](https://docs.strapi.io/cms/deployment) and [Nuxt](https://nuxt.com/docs/getting-started/deployment) deployment guides:
 
 ```bash
+# CMS
 cd apps/cms
-cp .env.example .env
-# set real secrets; prefer postgres in production (see .env.example)
 npm install
 NODE_ENV=production npm run build
 NODE_ENV=production npm run start
-```
 
-### Web
-
-```bash
+# Web
 cd apps/web
-cp .env.example .env
-# set STRAPI_URL to the public CMS URL
 npm install
 NITRO_PRESET=node-server npm run build
 NODE_ENV=production node .output/server/index.mjs
 ```
 
-Optional: `STRAPI_INTERNAL_URL` if the Nuxt server should call Strapi over a private network while the browser still uses `STRAPI_URL`.
+Set `STRAPI_URL` on the web app to the public CMS URL before building/running.
 
-Nuxt respects `PORT` / `HOST` (defaults `3000` / `0.0.0.0`). Put both apps behind HTTPS.
+CMS defaults to SQLite (`.env.example`). For production, switch to Postgres using the commented vars in `apps/cms/.env.example`.
 
-## App READMEs
-
-- [`apps/web/README.md`](apps/web/README.md) — Nuxt starter
-- [`apps/cms/README.md`](apps/cms/README.md) — Strapi starter
+Ports: CMS `1337`, web `3000` (override with `PORT` / `HOST`).
