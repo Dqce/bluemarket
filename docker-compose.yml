@@ -1,0 +1,71 @@
+# Optional local/prod stack. See README.md and:
+# https://docs.strapi.io/cms/installation/docker
+# https://nuxt.com/docs/getting-started/deployment
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DATABASE_USERNAME:-strapi}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-strapi}
+      POSTGRES_DB: ${DATABASE_NAME:-strapi}
+    volumes:
+      - strapi-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USERNAME:-strapi} -d ${DATABASE_NAME:-strapi}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - bluemarket
+
+  cms:
+    build:
+      context: ./apps/cms
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+      DATABASE_CLIENT: postgres
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+    ports:
+      - "1337:1337"
+    volumes:
+      - strapi-uploads:/opt/app/public/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - bluemarket
+
+  web:
+    build:
+      context: ./apps/web
+      args:
+        STRAPI_URL: ${STRAPI_URL:-http://localhost:1337}
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: 3000
+      STRAPI_URL: ${STRAPI_URL:-http://localhost:1337}
+      STRAPI_INTERNAL_URL: ${STRAPI_INTERNAL_URL:-http://cms:1337}
+      NUXT_PUBLIC_STRAPI_URL: ${STRAPI_URL:-http://localhost:1337}
+      NUXT_STRAPI_INTERNAL_URL: ${STRAPI_INTERNAL_URL:-http://cms:1337}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - cms
+    networks:
+      - bluemarket
+
+volumes:
+  strapi-data:
+  strapi-uploads:
+
+networks:
+  bluemarket:
+    driver: bridge

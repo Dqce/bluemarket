@@ -1,59 +1,119 @@
 # BlueMarket
 
-Nuxt 4 marketing site + Strapi 5 CMS.
+Monorepo for the BlueMarket marketing site.
 
-## Apps
+| Path | App |
+| --- | --- |
+| `apps/web` | Nuxt 4 front end |
+| `apps/cms` | Strapi 5 CMS |
 
-| App | Stack | Local URL |
-| --- | --- | --- |
-| `apps/web` | Nuxt 4, Vue 3, Tailwind CSS v4, shadcn-vue | http://localhost:3000 |
-| `apps/cms` | Strapi 5, SQLite | http://localhost:1337/admin |
+Official docs:
 
-## Local start
+- [Nuxt](https://nuxt.com/docs/getting-started/installation)
+- [Strapi](https://docs.strapi.io)
+- [Strapi Docker](https://docs.strapi.io/cms/installation/docker)
+- [Nuxt deployment](https://nuxt.com/docs/getting-started/deployment)
+
+## Requirements
+
+- Node.js 22 or newer ([Nuxt 4 requirement](https://nuxt.com/docs/4.x/getting-started/installation))
+- npm
+
+## Local development
+
+### CMS
 
 ```bash
-# Terminal 1 — CMS
 cd apps/cms
-cp .env.example .env   # then replace every tobemodified secret
+cp .env.example .env
+# replace the tobemodified secrets in .env
 npm install
 npm run develop
+```
 
-# Terminal 2 — Web
+Admin: http://localhost:1337/admin
+
+Create the first admin user on first boot. Homepage content is seeded if the single type is empty. Public API access is limited to Homepage `find`.
+
+### Web
+
+```bash
 cd apps/web
 cp .env.example .env
 npm install
 npm run dev
 ```
 
-From the repo root: `npm run develop` then `npm run dev`.
+Site: http://localhost:3000
 
-First CMS boot: create the admin user at `/admin`. Homepage copy seeds automatically. Public API is **Homepage find only**.
+`STRAPI_URL` in `apps/web/.env` should point at the CMS (default `http://localhost:1337`).
 
-## Editing copy
+From the repo root you can also run `npm run develop` (CMS) and `npm run dev` (web).
 
-Strapi → Content Manager → Homepage. Save, refresh the site.
+## Content
 
-If Strapi is down, the web app renders from `apps/web/app/lib/homepage-fallback.ts`.
+Edit copy in Strapi → Content Manager → Homepage.
 
-Contact is mailto only (`hello@bluemarket.co.za`). No inquiry form.
+If the CMS is unreachable, the web app falls back to `apps/web/app/lib/homepage-fallback.ts`.
 
-## Security notes (production)
+Contact is email only: `hello@bluemarket.co.za`.
 
-- Never commit `.env`. Generate fresh `APP_KEYS`, salts, and JWT secrets per environment.
-- Homepage router exposes `find` only; create/update/delete stay in admin.
-- Bootstrap grants Public role `homepage.find` only.
-- SQLite (`.tmp/data.db`) is fine for demos; use Postgres for real production.
-- Put Strapi behind HTTPS. Restrict admin to trusted IPs if possible.
+## Production (without Docker)
 
-## Static preview (GitHub Pages)
+### CMS
 
-The marketing site can ship as a static export (fallback copy, no live CMS):
+Follow [Strapi deployment](https://docs.strapi.io/cms/deployment). Typical flow:
+
+```bash
+cd apps/cms
+cp .env.example .env
+# set real secrets; prefer postgres in production (see .env.example)
+npm install
+NODE_ENV=production npm run build
+NODE_ENV=production npm run start
+```
+
+### Web
+
+Follow [Nuxt Node server deployment](https://nuxt.com/docs/getting-started/deployment):
 
 ```bash
 cd apps/web
-NUXT_APP_BASE_URL=/bluemarket/ npm run generate
+cp .env.example .env
+# set STRAPI_URL to the public CMS URL (browser-reachable)
+npm install
+NITRO_PRESET=node-server npm run build
+NODE_ENV=production node .output/server/index.mjs
 ```
 
-Output: `apps/web/.output/public`. That folder is what GitHub Pages serves on the `gh-pages` branch.
+Optional: `STRAPI_INTERNAL_URL` for server-side fetches inside a private network (e.g. Docker service name). Public `STRAPI_URL` is still what the browser uses.
 
-Full stack (Nuxt + Strapi) needs a real host (Vercel/Netlify/Fly/Railway/etc.), not Pages alone.
+Env vars for the Node process:
+
+- `PORT` / `HOST` (Nuxt/Nitro defaults: `3000` / `0.0.0.0`)
+- `STRAPI_URL`
+- `STRAPI_INTERNAL_URL` (optional)
+
+Put both apps behind HTTPS (nginx, Caddy, Traefik, etc.).
+
+## Docker Compose
+
+`docker-compose.yml` at the repo root runs Postgres, Strapi, and the Nuxt server. The Dockerfiles follow Strapi’s production image pattern and Nuxt’s Node server output.
+
+```bash
+cp .env.docker.example .env
+# edit secrets and URLs
+docker compose up --build
+```
+
+- Site: http://localhost:3000
+- CMS admin: http://localhost:1337/admin
+
+Adapt ports, reverse proxy, and secrets for your host. Do not commit real `.env` files.
+
+## App READMEs
+
+Scaffold notes from each framework:
+
+- [`apps/web/README.md`](apps/web/README.md)
+- [`apps/cms/README.md`](apps/cms/README.md)

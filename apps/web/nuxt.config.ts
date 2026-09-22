@@ -20,6 +20,7 @@ export default defineNuxtConfig({
     componentDir: '@/components/ui',
   },
   runtimeConfig: {
+    strapiInternalUrl: process.env.STRAPI_INTERNAL_URL || '',
     public: {
       strapiUrl: process.env.STRAPI_URL || 'http://localhost:1337',
     },
@@ -34,9 +35,6 @@ export default defineNuxtConfig({
       { name: 'Inter', provider: 'google' },
       { name: 'JetBrains Mono', provider: 'google' },
     ],
-  },
-  nitro: {
-    preset: 'static',
   },
   app: {
     baseURL,

@@ -3,7 +3,7 @@ import { homepageFallback } from '~/lib/homepage-fallback'
 
 export function useHomepage() {
   const config = useRuntimeConfig()
-  const base = config.public.strapiUrl
+  const base = (config.strapiInternalUrl as string) || config.public.strapiUrl
 
   return useAsyncData<Homepage>('homepage', async () => {
     try {
