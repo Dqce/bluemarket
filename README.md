@@ -11,8 +11,8 @@ Official docs:
 
 - [Nuxt](https://nuxt.com/docs/getting-started/installation)
 - [Strapi](https://docs.strapi.io)
-- [Strapi Docker](https://docs.strapi.io/cms/installation/docker)
 - [Nuxt deployment](https://nuxt.com/docs/getting-started/deployment)
+- [Strapi deployment](https://docs.strapi.io/cms/deployment)
 
 ## Requirements
 
@@ -58,11 +58,9 @@ If the CMS is unreachable, the web app falls back to `apps/web/app/lib/homepage-
 
 Contact is email only: `hello@bluemarket.co.za`.
 
-## Production (without Docker)
+## Production
 
 ### CMS
-
-Follow [Strapi deployment](https://docs.strapi.io/cms/deployment). Typical flow:
 
 ```bash
 cd apps/cms
@@ -75,45 +73,20 @@ NODE_ENV=production npm run start
 
 ### Web
 
-Follow [Nuxt Node server deployment](https://nuxt.com/docs/getting-started/deployment):
-
 ```bash
 cd apps/web
 cp .env.example .env
-# set STRAPI_URL to the public CMS URL (browser-reachable)
+# set STRAPI_URL to the public CMS URL
 npm install
 NITRO_PRESET=node-server npm run build
 NODE_ENV=production node .output/server/index.mjs
 ```
 
-Optional: `STRAPI_INTERNAL_URL` for server-side fetches inside a private network (e.g. Docker service name). Public `STRAPI_URL` is still what the browser uses.
+Optional: `STRAPI_INTERNAL_URL` if the Nuxt server should call Strapi over a private network while the browser still uses `STRAPI_URL`.
 
-Env vars for the Node process:
-
-- `PORT` / `HOST` (Nuxt/Nitro defaults: `3000` / `0.0.0.0`)
-- `STRAPI_URL`
-- `STRAPI_INTERNAL_URL` (optional)
-
-Put both apps behind HTTPS (nginx, Caddy, Traefik, etc.).
-
-## Docker Compose
-
-`docker-compose.yml` at the repo root runs Postgres, Strapi, and the Nuxt server. The Dockerfiles follow Strapi’s production image pattern and Nuxt’s Node server output.
-
-```bash
-cp .env.docker.example .env
-# edit secrets and URLs
-docker compose up --build
-```
-
-- Site: http://localhost:3000
-- CMS admin: http://localhost:1337/admin
-
-Adapt ports, reverse proxy, and secrets for your host. Do not commit real `.env` files.
+Nuxt respects `PORT` / `HOST` (defaults `3000` / `0.0.0.0`). Put both apps behind HTTPS.
 
 ## App READMEs
 
-Scaffold notes from each framework:
-
-- [`apps/web/README.md`](apps/web/README.md)
-- [`apps/cms/README.md`](apps/cms/README.md)
+- [`apps/web/README.md`](apps/web/README.md) — Nuxt starter
+- [`apps/cms/README.md`](apps/cms/README.md) — Strapi starter

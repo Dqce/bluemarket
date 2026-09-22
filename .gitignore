@@ -4,7 +4,6 @@ node_modules
 .env
 .env.*
 !.env.example
-!.env.docker.example
 
 apps/cms/.tmp/
 apps/cms/.strapi/
