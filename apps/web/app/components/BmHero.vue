@@ -24,7 +24,7 @@ function stripPunct(word: string) {
 
 /**
  * Split title around an editable emphasis phrase from Strapi.
- * Matches by word (ignoring punctuation), so “serious systems” hits “systems.”
+ * Matches by word (ignoring punctuation), so “serious systems” hits “systems”.
  */
 const titleParts = computed(() => {
   const tokens = props.title.trim().split(/\s+/).filter(Boolean)

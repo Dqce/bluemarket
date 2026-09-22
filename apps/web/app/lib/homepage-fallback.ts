@@ -2,7 +2,7 @@ import type { Homepage } from '~/types/homepage'
 
 export const homepageFallback: Homepage = {
   heroEyebrow: 'BUILDING THE PIECES THAT MAKE SYSTEMS WORK',
-  heroTitle: 'Serious software for serious systems.',
+  heroTitle: 'Serious software for serious systems',
   heroEmphasis: 'serious systems',
   heroLead:
     'BlueMarket develops production-grade systems for aviation and fintech operators who demand reliability, speed, and security. We design resilient mobile and web applications, high-throughput backend services, hardened infrastructure, and deep system integrations, built to perform at scale in real-world conditions.',
