@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
+import { withBase } from 'ufo'
 
 const rootRef = ref<HTMLElement | null>(null)
 const canvasRef = ref<HTMLCanvasElement | null>(null)
@@ -40,8 +41,17 @@ function noise2(x: number, y: number, t: number) {
 async function buildMask() {
   const img = new Image()
   img.decoding = 'async'
-  img.src = '/bluemarket-icon.png'
-  await img.decode()
+  // withBase respects NUXT_APP_BASE_URL (e.g. /bluemarket/ on GitHub Pages)
+  img.src = withBase('/bluemarket-icon.png')
+  try {
+    await img.decode()
+  } catch {
+    await new Promise<void>((resolve, reject) => {
+      img.onload = () => resolve()
+      img.onerror = () => reject(new Error('Failed to load bluemarket-icon.png'))
+      if (img.complete && img.naturalWidth) resolve()
+    })
+  }
 
   const size = 640
   const c = document.createElement('canvas')
@@ -284,8 +294,13 @@ onMounted(async () => {
   reduce = mq.matches
   mq.addEventListener('change', onReduceChange)
 
-  await buildMask()
-  cacheMaskBuffer()
+  try {
+    await buildMask()
+    cacheMaskBuffer()
+  } catch {
+    maskReady = false
+  }
+
   resize()
   start()
 

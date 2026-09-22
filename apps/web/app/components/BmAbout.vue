@@ -42,7 +42,7 @@ onMounted(async () => {
 
     gsap.set([lead, punch, body, side].filter(Boolean), { autoAlpha: 0 })
     if (lead) gsap.set(lead, { y: 40 })
-    if (punch) gsap.set(punch, { y: 56, scale: 0.96 })
+    if (punch) gsap.set(punch, { y: 56, scale: 0.92, transformOrigin: 'left center' })
     if (rule) gsap.set(rule, { scaleX: 0 })
     if (body) gsap.set(body, { y: 24 })
     if (side) gsap.set(side, { y: 32 })
@@ -50,27 +50,34 @@ onMounted(async () => {
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: rootRef.value,
-        start: 'top 75%',
+        start: 'top 78%',
         toggleActions: 'play none none none',
         once: true,
       },
       defaults: { ease: 'power3.out' },
     })
 
+    // Hold “Small team,” long enough to read before the punch lands.
     if (lead) {
-      tl.to(lead, { y: 0, autoAlpha: 1, duration: 0.55 })
+      tl.to(lead, { y: 0, autoAlpha: 1, duration: 0.95 })
+      tl.to({}, { duration: 0.45 })
     }
     if (punch) {
-      tl.to(punch, { y: 0, autoAlpha: 1, scale: 1, duration: 0.65, ease: 'power4.out' }, '-=0.25')
+      tl.fromTo(
+        punch,
+        { y: 56, autoAlpha: 0, scale: 0.92 },
+        { y: 0, autoAlpha: 1, scale: 1.12, duration: 0.85, ease: 'power3.out' },
+      )
+      tl.to(punch, { scale: 1, duration: 0.55, ease: 'power2.out' })
     }
     if (rule) {
-      tl.to(rule, { scaleX: 1, duration: 0.7, ease: 'power2.inOut' }, '-=0.2')
+      tl.to(rule, { scaleX: 1, duration: 0.85, ease: 'power2.inOut' }, '-=0.35')
     }
     if (body) {
-      tl.to(body, { y: 0, autoAlpha: 1, duration: 0.55 }, '-=0.35')
+      tl.to(body, { y: 0, autoAlpha: 1, duration: 0.7 }, '-=0.45')
     }
     if (side) {
-      tl.to(side, { y: 0, autoAlpha: 1, duration: 0.65 }, '-=0.35')
+      tl.to(side, { y: 0, autoAlpha: 1, duration: 0.8 }, '-=0.5')
     }
   }, rootRef.value)
 })
